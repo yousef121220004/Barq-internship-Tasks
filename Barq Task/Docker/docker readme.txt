@@ -32,6 +32,7 @@ It will create your CSV and image inside the Docker container.
 Step 4 : Get your output files
 To save the output files in your project folder on your computer, run this command instead:
 
-docker run --rm -v %cd%:/app subnet-analyzer
+docker run --rm -v "%cd%":/app subnet-analyzer
+
 (On Mac/Linux replace %cd% with $(pwd))
 
