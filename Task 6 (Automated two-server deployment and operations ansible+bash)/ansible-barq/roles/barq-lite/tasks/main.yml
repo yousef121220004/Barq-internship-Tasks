@@ -1,0 +1,72 @@
+---
+- name: Ensure Java (OpenJDK 21) is installed (Ubuntu/Debian)
+  apt:
+    name: openjdk-21-jre
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create group
+  group:
+    name: "{{ barq_group }}"
+    state: present
+  become: yes
+
+- name: Create user
+  user:
+    name: "{{ barq_user }}"
+    group: "{{ barq_group }}"
+    shell: /usr/sbin/nologin
+    system: yes
+    create_home: no
+  become: yes
+
+- name: Create install dir
+  file:
+    path: "{{ barq_install_dir }}"
+    state: directory
+    owner: "{{ barq_user }}"
+    group: "{{ barq_group }}"
+    mode: '0755'
+  become: yes
+
+- name: Create log dir
+  file:
+    path: "{{ barq_log_dir }}"
+    state: directory
+    owner: "{{ barq_user }}"
+    group: "{{ barq_group }}"
+    mode: '0755'
+  become: yes
+
+- name: Copy application JAR
+  copy:
+    src: "{{ barq_jar_src }}"
+    dest: "{{ barq_install_dir }}/{{ barq_jar_name }}"
+    owner: "{{ barq_user }}"
+    group: "{{ barq_group }}"
+    mode: '0644'
+  become: yes
+  notify: Restart barq-lite
+
+- name: Place systemd unit
+  template:
+    src: barq-lite.service.j2
+    dest: "/etc/systemd/system/{{ barq_service_name }}.service"
+    mode: '0644'
+  become: yes
+  notify:
+    - Daemon reload
+    - Restart barq-lite
+
+- name: Enable service at boot
+  systemd:
+    name: "{{ barq_service_name }}"
+    enabled: yes
+  become: yes
+
+- name: Start service
+  systemd:
+    name: "{{ barq_service_name }}"
+    state: started
+  become: yes

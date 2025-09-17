@@ -1,0 +1,10 @@
+barq_user: barq
+barq_group: barq
+barq_app_name: barq-lite
+barq_install_dir: /opt/barq-lite
+barq_log_dir: /var/log/barq
+barq_jar_name: barq-lite.jar
+barq_jar_src: /home/yousef/barq-lite/barq-lite.jar   # <-- your file
+barq_java_bin: /usr/bin/java
+barq_java_opts: "-Xms128m -Xmx256m"
+barq_service_name: barq-lite

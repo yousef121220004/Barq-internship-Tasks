@@ -1,0 +1,13 @@
+[Service]
+User={{ barq_user }}
+Group={{ barq_group }}
+WorkingDirectory={{ barq_install_dir }}
+ExecStart={{ barq_java_bin }} {{ barq_java_opts }} -jar {{ barq_install_dir }}/{{ barq_jar_name }}
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+
+# Send logs to files
+StandardOutput=append:{{ barq_log_dir }}/stdout.log
+StandardError=append:{{ barq_log_dir }}/stderr.log
+

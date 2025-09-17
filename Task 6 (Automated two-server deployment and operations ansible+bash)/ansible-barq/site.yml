@@ -1,0 +1,6 @@
+---
+- name: Deploy BARQ Lite
+  hosts: barq_hosts
+  become: yes
+  roles:
+    - barq-lite

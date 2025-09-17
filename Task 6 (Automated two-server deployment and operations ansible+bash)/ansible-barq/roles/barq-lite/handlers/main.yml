@@ -1,0 +1,11 @@
+---
+- name: Daemon reload
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: Restart barq-lite
+  systemd:
+    name: "{{ barq_service_name }}"
+    state: restarted
+  become: yes
